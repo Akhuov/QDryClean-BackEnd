@@ -50,7 +50,7 @@ namespace QDryClean.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("ItemCategoryId")]
+        [HttpGet("{itemCategoryId:int}")]
         public async Task<IActionResult> GetByIdItemCategoryAsync(int id)
         {
             var command = new GetByIdItemCategoryQuerry() { Id = id };

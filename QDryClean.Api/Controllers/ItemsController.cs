@@ -53,8 +53,8 @@ namespace QDryClean.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("ItemTypeId")]
-        public async Task<IActionResult> GetByIdItemTypeAsync(int id)
+        [HttpGet("{itemId:int}")]
+        public async Task<IActionResult> GetByIdItemAsync(int id)
         {
             var command = new GetByIdItemQuerry() { Id = id };
             var result = await _mediator.Send(command);
