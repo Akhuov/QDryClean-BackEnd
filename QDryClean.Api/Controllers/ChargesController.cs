@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QDryClean.Application.UseCases.Charges.Commands;
 using QDryClean.Application.UseCases.Charges.Quarries;
+using QDryClean.Domain.Entities;
 using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
@@ -50,9 +51,9 @@ namespace QDryClean.Api.Controllers
         }
 
         [HttpGet("{chargeId:int}")]
-        public async Task<IActionResult> GetByIdChargeAsync(int id)
+        public async Task<IActionResult> GetByIdChargeAsync(int chargeId)
         {
-            var command = new GetByIdChargeCommand() { Id = id };
+            var command = new GetByIdChargeCommand() { Id = chargeId };
             var result = await _mediator.Send(command);
             return Ok(result);
         }

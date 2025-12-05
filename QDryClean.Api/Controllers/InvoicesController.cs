@@ -50,9 +50,9 @@ namespace QDryClean.Api.Controllers
         }
 
         [HttpGet("{invoiceId:int}")]
-        public async Task<IActionResult> GetByIdInvoiceAsync(int id)
+        public async Task<IActionResult> GetByIdInvoiceAsync(int invoiceId)
         {
-            var command = new GetByIdInvoiceCommand() { Id = id };
+            var command = new GetByIdInvoiceCommand() { Id = invoiceId };
             var result = await _mediator.Send(command);
             return Ok(result);
         }
