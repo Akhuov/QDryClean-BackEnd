@@ -6,7 +6,7 @@ using QDryClean.Infrastructure.Services.JWT;
 
 namespace QDryClean.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/auth")]
     [ApiController]
     public class AuthController : ControllerBase
     {

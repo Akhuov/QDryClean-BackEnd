@@ -7,7 +7,7 @@ using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/v1/customers")]
     [ApiController]
     public class CustomersController : ControllerBase
     {

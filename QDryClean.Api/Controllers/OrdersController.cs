@@ -8,18 +8,16 @@ using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/orders")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
 
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
 
         public OrdersController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
         
         
