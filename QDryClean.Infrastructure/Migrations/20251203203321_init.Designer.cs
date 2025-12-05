@@ -12,8 +12,8 @@ using QDryClean.Infrastructure.Persistance;
 namespace QDryClean.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250913090427_makeNotNullableDecimalValues")]
-    partial class makeNotNullableDecimalValues
+    [Migration("20251203203321_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

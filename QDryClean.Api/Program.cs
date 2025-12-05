@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using QDryClean.Api.Middlewares;
 using QDryClean.Application;
 using QDryClean.Application.Common.Interfaces.Auth;
 using QDryClean.Infrastructure;
+using QDryClean.Infrastructure.Persistance;
 using QDryClean.Infrastructure.Services.JWT;
 using System.Text;
 
@@ -86,13 +88,24 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+// ѕримен€ем миграции один раз при старте
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    context.Database.Migrate();
+}
+
+app.Urls.Add("http://+:5000");
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
 
 if (app.Environment.IsDevelopment())
-{   
+{
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
+    });
 }
 //app.UseStaticFiles();
 
