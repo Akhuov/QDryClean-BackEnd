@@ -22,7 +22,7 @@ namespace QDryClean.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCustomerAsync(CreateCustomerCommand command)
         {
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command); 
             return Created("User created successfully.", result);
         }
 
