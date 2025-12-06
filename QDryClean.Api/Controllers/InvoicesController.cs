@@ -28,7 +28,7 @@ namespace QDryClean.Api.Controllers
             return Created("Invoice created successfully.", result);
         }
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
-        [HttpDelete]
+        [HttpDelete("{invoiceId:int}")]
         public async Task<IActionResult> DeleteInvoiceAsync(DeleteInvoiceCommand command)
         {
             var result = await _mediator.Send(command);

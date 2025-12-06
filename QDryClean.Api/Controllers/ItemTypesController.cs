@@ -28,7 +28,7 @@ namespace QDryClean.Api.Controllers
             return Created("ItemType created successfully.", result);
         }
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
-        [HttpDelete]
+        [HttpDelete("{itemTypeId:int}")]
         public async Task<IActionResult> DeleteItemTypeAsync(DeleteItemTypeCommand command)
         {
             var result = await _mediator.Send(command);

@@ -31,7 +31,7 @@ namespace QDryClean.Api.Controllers
         }
 
 
-        [HttpDelete]
+        [HttpDelete("{userId:int}")]
         [Authorize(Roles = nameof(UserRole.Admin))]
         public async Task<IActionResult> DeleteUserAsync(int userId)
         {

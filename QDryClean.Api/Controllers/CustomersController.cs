@@ -27,7 +27,7 @@ namespace QDryClean.Api.Controllers
         }
 
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
-        [HttpDelete]
+        [HttpDelete("{customerId:int}")]
         public async Task<IActionResult> DeleteCustomerAsync(DeleteCustomerCommand command)
         {
             var result = await _mediator.Send(command);
