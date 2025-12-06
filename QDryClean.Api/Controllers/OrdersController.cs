@@ -8,18 +8,16 @@ using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/orders")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
 
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
 
         public OrdersController(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
         
         
@@ -33,7 +31,7 @@ namespace QDryClean.Api.Controllers
         
         
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
-        [HttpDelete]
+        [HttpDelete("{orderId:int}")]
         public async Task<IActionResult> DeleteOrderAsync(DeleteOrderCommand command)
         {
             var result = await _mediator.Send(command);
@@ -59,10 +57,10 @@ namespace QDryClean.Api.Controllers
         }
 
 
-        [HttpGet("OrderId")]
-        public async Task<IActionResult> GetByIdItemTypeAsync(int id)
+        [HttpGet("{orderId:int}")]
+        public async Task<IActionResult> GetByIdOrderAsync(int orderId)
         {
-            var command = new GetByIdOrderCommand() { Id = id };
+            var command = new GetByIdOrderCommand() { Id = orderId };
             var result = await _mediator.Send(command);
             return Ok(result);
         }

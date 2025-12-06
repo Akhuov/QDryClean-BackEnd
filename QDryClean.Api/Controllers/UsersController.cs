@@ -8,7 +8,7 @@ using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -31,9 +31,8 @@ namespace QDryClean.Api.Controllers
         }
 
 
-        [HttpDelete]
+        [HttpDelete("{userId:int}")]
         [Authorize(Roles = nameof(UserRole.Admin))]
-
         public async Task<IActionResult> DeleteUserAsync(int userId)
         {
             var command = new DeleteUserCommand

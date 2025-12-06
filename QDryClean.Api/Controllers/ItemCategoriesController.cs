@@ -7,7 +7,7 @@ using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/v1/item-categories")]
     [ApiController]
     public class ItemCategoriesController : ControllerBase
     {
@@ -27,7 +27,7 @@ namespace QDryClean.Api.Controllers
         }
 
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
-        [HttpDelete]
+        [HttpDelete("{itemCategoryId:int}")]
         public async Task<IActionResult> DeleteItemCategoryAsync(DeleteItemCategoryCommand command)
         {
             var result = await _mediator.Send(command);
@@ -50,10 +50,10 @@ namespace QDryClean.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetByIdItemCategoryAsync(int id)
+        [HttpGet("{itemCategoryId:int}")]
+        public async Task<IActionResult> GetByIdItemCategoryAsync(int itemCategoryId)
         {
-            var command = new GetByIdItemCategoryQuerry() { Id = id };
+            var command = new GetByIdItemCategoryQuerry() { Id = itemCategoryId };
             var result = await _mediator.Send(command);
             return Ok(result);
         }

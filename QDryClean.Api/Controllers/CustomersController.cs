@@ -7,7 +7,7 @@ using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/v1/customers")]
     [ApiController]
     public class CustomersController : ControllerBase
     {
@@ -22,12 +22,12 @@ namespace QDryClean.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCustomerAsync(CreateCustomerCommand command)
         {
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(command); 
             return Created("User created successfully.", result);
         }
 
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
-        [HttpDelete]
+        [HttpDelete("{customerId:int}")]
         public async Task<IActionResult> DeleteCustomerAsync(DeleteCustomerCommand command)
         {
             var result = await _mediator.Send(command);
@@ -50,10 +50,10 @@ namespace QDryClean.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetByIdCustomerAsync(int id)
+        [HttpGet("{customerId:int}")]
+        public async Task<IActionResult> GetByIdCustomerAsync(int customerId)
         {
-            var command = new GetByIdCustomerQuerry() { Id = id };
+            var command = new GetByIdCustomerQuerry() { Id = customerId };
             var result = await _mediator.Send(command);
             return Ok(result);
         }

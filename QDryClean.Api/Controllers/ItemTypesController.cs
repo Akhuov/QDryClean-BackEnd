@@ -8,7 +8,7 @@ using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/item-types")]
     [ApiController]
     public class ItemTypesController : ControllerBase
     {
@@ -28,7 +28,7 @@ namespace QDryClean.Api.Controllers
             return Created("ItemType created successfully.", result);
         }
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
-        [HttpDelete]
+        [HttpDelete("{itemTypeId:int}")]
         public async Task<IActionResult> DeleteItemTypeAsync(DeleteItemTypeCommand command)
         {
             var result = await _mediator.Send(command);
@@ -49,10 +49,10 @@ namespace QDryClean.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("ItemTypeId")]
-        public async Task<IActionResult> GetByIdItemTypeAsync(int id)
+        [HttpGet("{itemTypeId:int}")]
+        public async Task<IActionResult> GetByIdItemTypeAsync(int itemTypeId)
         {
-            var command = new GetByIdItemTypeCommand() { Id = id };
+            var command = new GetByIdItemTypeCommand() { Id = itemTypeId };
             var result = await _mediator.Send(command);
             return Ok(result);
         }

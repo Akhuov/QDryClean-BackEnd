@@ -8,7 +8,7 @@ using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/invoices")]
     [ApiController]
     public class InvoicesController : ControllerBase
     {
@@ -28,7 +28,7 @@ namespace QDryClean.Api.Controllers
             return Created("Invoice created successfully.", result);
         }
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
-        [HttpDelete]
+        [HttpDelete("{invoiceId:int}")]
         public async Task<IActionResult> DeleteInvoiceAsync(DeleteInvoiceCommand command)
         {
             var result = await _mediator.Send(command);
@@ -49,10 +49,10 @@ namespace QDryClean.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("InvoiceId")]
-        public async Task<IActionResult> GetByIdInvoiceAsync(int id)
+        [HttpGet("{invoiceId:int}")]
+        public async Task<IActionResult> GetByIdInvoiceAsync(int invoiceId)
         {
-            var command = new GetByIdInvoiceCommand() { Id = id };
+            var command = new GetByIdInvoiceCommand() { Id = invoiceId };
             var result = await _mediator.Send(command);
             return Ok(result);
         }

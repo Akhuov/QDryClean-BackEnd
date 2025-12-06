@@ -2,8 +2,9 @@
 {
     public enum UserRole
     {
-        Receptionist = 0,
-        Packer = 1,
-        Admin = 2,
+        Admin = 1,
+        Operator = 2,
+        Packer = 3,
+        Receptionist = 4,
     }
 }
