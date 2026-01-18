@@ -25,12 +25,14 @@ public class ErrorHandlingMiddleware
 
             context.Response.ContentType = "application/json";
 
-            var response = new { message = ex.Message };
+            var response = new { errorMessage = ex.Message };
 
             context.Response.StatusCode = ex switch
             {
                 NotFoundException => StatusCodes.Status404NotFound,
                 BadRequestExeption => StatusCodes.Status400BadRequest,
+                UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
+                InvalidLoginAndPasswordException => StatusCodes.Status400BadRequest,
                 _ => StatusCodes.Status500InternalServerError
             };
 
