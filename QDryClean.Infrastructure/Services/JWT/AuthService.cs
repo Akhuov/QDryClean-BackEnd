@@ -1,7 +1,7 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Auth;
+using QDryClean.Application.Exceptions;
 
 namespace QDryClean.Infrastructure.Services.JWT;
 
@@ -21,11 +21,11 @@ public class AuthService : IAuthService
         var user = await _context.Users.FirstOrDefaultAsync(u => u.LogIn == login);
         if (user is null)
         {
-            throw new UnauthorizedAccessException("Invalid login.");
+            throw new InvalidLoginAndPasswordException("Invalid login.");
         }
         if (user.Password != password)
         {
-            throw new UnauthorizedAccessException("Invalid password.");
+            throw new InvalidLoginAndPasswordException("Invalid password.");
         }
 
         return _tokenService.GenerateToken(user.Id, user.UserRole);
