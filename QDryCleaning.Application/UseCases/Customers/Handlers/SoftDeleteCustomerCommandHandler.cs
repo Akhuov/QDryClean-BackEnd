@@ -7,22 +7,25 @@ using QDryClean.Application.UseCases.Customers.Commands.Delete;
 
 namespace QDryClean.Application.UseCases.Customers.Handlers
 {
-    public class DeleteCustomerCommandHandler : CommandHandlerBase, IRequestHandler<DeleteCustomerCommand, string>
+    public class SoftDeleteCustomerCommandHandler : CommandHandlerBase, IRequestHandler<SoftDeleteCustomerCommand, string>
     {
-        public DeleteCustomerCommandHandler(
+
+        public SoftDeleteCustomerCommandHandler(
             IApplicationDbContext applicationDbContext,
             ICurrentUserService currentUserService,
             IMapper mapper) : base(applicationDbContext, currentUserService, mapper) { }
 
-        public async Task<string> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(SoftDeleteCustomerCommand request, CancellationToken cancellationToken)
         {
             var customer = await _applicationDbContext.Customers.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
 
-            _applicationDbContext.Customers.Remove(customer);
+            customer.DeletedAt = DateTime.Now;
+            customer.DeletedBy = _currentUserService.UserId;
+
+            _applicationDbContext.Customers.Update(customer);
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
             return $"Customer {customer.FirstName} Deleted Succesfully!";
 
         }
     }
 }
-

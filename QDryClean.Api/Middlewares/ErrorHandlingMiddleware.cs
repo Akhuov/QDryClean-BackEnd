@@ -1,4 +1,4 @@
-﻿using QDryClean.Application.Exceptions;
+﻿using QDryClean.Application.Common.Exceptions;
 
 namespace QDryClean.Api.Middlewares;
 

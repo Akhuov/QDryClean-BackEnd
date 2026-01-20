@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Auth;
-using QDryClean.Application.Exceptions;
+using QDryClean.Application.Common.Exceptions;
 
 namespace QDryClean.Infrastructure.Services.JWT;
 
