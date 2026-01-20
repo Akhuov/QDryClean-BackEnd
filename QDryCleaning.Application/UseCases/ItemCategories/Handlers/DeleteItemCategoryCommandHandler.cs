@@ -2,8 +2,8 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
+using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.Common.Interfaces.Services;
-using QDryClean.Application.Exceptions;
 using QDryClean.Application.UseCases.ItemCategories.Commands;
 
 namespace QDryClean.Application.UseCases.ItemCategories.Handlers

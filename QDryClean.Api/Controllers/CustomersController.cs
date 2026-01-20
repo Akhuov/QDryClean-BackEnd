@@ -1,8 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using QDryClean.Application.UseCases.Customers.Commands;
-using QDryClean.Application.UseCases.Customers.Querries;
+using QDryClean.Application.UseCases.Customers.Commands.Create;
+using QDryClean.Application.UseCases.Customers.Commands.Delete;
+using QDryClean.Application.UseCases.Customers.Commands.Update;
+using QDryClean.Application.UseCases.Customers.Querries.GetAll;
+using QDryClean.Application.UseCases.Customers.Querries.GetById;
 using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
@@ -28,9 +31,9 @@ namespace QDryClean.Api.Controllers
 
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpDelete("{customerId:int}")]
-        public async Task<IActionResult> DeleteCustomerAsync(DeleteCustomerCommand command)
+        public async Task<IActionResult> DeleteCustomerAsync(int customerId)
         {
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(new SoftDeleteCustomerCommand() { Id = customerId });
             return Ok(result);
         }
 
@@ -45,7 +48,7 @@ namespace QDryClean.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCustomersAsync()
         {
-            var command = new GetAllCustomersQuerry();
+            var command = new GetAllCustomersQuery();
             var result = await _mediator.Send(command);
             return Ok(result);
         }
@@ -53,8 +56,7 @@ namespace QDryClean.Api.Controllers
         [HttpGet("{customerId:int}")]
         public async Task<IActionResult> GetByIdCustomerAsync(int customerId)
         {
-            var command = new GetByIdCustomerQuerry() { Id = customerId };
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(new GetByIdCustomerQuery() { Id = customerId });
             return Ok(result);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using QDryClean.Application.Dtos;
-using QDryClean.Application.UseCases.Customers.Commands;
+using QDryClean.Application.UseCases.Customers.Commands.Create;
+using QDryClean.Application.UseCases.Customers.Commands.Update;
 using QDryClean.Domain.Entities;
 
 namespace QDryClean.Application.Mappings

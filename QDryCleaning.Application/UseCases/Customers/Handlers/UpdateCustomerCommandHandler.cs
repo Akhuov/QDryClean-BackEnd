@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Services;
 using QDryClean.Application.Dtos;
-using QDryClean.Application.Exceptions;
-using QDryClean.Application.UseCases.Customers.Commands;
+using QDryClean.Application.Common.Exceptions;
+using QDryClean.Application.UseCases.Customers.Commands.Update;
 
 namespace QDryClean.Application.UseCases.Customers.Handlers
 {

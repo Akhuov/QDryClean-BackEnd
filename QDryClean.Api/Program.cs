@@ -1,10 +1,14 @@
+using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using QDryClean.Api.Middlewares;
 using QDryClean.Application;
+using QDryClean.Application.Common.Behaviors;
 using QDryClean.Application.Common.Interfaces.Auth;
+using QDryClean.Application.UseCases.Customers.Commands.Create;
 using QDryClean.Infrastructure;
 using QDryClean.Infrastructure.Persistance;
 using QDryClean.Infrastructure.Services.JWT;
@@ -21,6 +25,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
+// Controllers and JSON options to ignore cycles
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -29,6 +34,8 @@ builder.Services.AddControllers()
 
 
 builder.Services.AddEndpointsApiExplorer();
+
+// Swagger
 builder.Services.AddSwaggerGen(c =>
 {
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
@@ -57,6 +64,7 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+// JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -74,6 +82,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp",
@@ -85,6 +94,14 @@ builder.Services.AddCors(options =>
         });
 });
 
+// Fluent Validation
+builder.Services.AddValidatorsFromAssemblyContaining<CreateCustomerCommandValidator>();
+
+builder.Services.AddTransient(
+    typeof(IPipelineBehavior<,>),
+    typeof(ValidationBehavior<,>)
+);
+
 
 var app = builder.Build();
 
@@ -95,10 +112,13 @@ using (var scope = app.Services.CreateScope())
     context.Database.Migrate();
 }
 
+// Configure Kestrel to listen on port 5000
 app.Urls.Add("http://+:5000");
+
+// Global Error Handling Middleware
 app.UseMiddleware<ErrorHandlingMiddleware>();
 
-
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

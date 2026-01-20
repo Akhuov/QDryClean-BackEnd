@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
-using QDryClean.Application.Exceptions;
+using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.UseCases.Users.Commands;
 
 namespace QDryClean.Application.UseCases.Users.Handlers

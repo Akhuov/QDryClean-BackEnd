@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace QDryClean.Application.UseCases.Customers.Commands
+namespace QDryClean.Application.UseCases.Customers.Commands.Delete
 {
     public class DeleteCustomerCommand : IRequest<string>
     {

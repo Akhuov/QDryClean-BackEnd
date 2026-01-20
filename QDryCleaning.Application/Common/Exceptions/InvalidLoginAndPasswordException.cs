@@ -1,4 +1,4 @@
-﻿namespace QDryClean.Application.Exceptions
+﻿namespace QDryClean.Application.Common.Exceptions
 {
     public class InvalidLoginAndPasswordException : Exception
     {
