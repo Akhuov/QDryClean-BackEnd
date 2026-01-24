@@ -3,41 +3,29 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Services;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
-using QDryClean.Application.Common.Exceptions;
-using QDryClean.Application.UseCases.Orders.Quarries;
+using QDryClean.Application.UseCases.Orders.Queries.GetAll;
 
 namespace QDryClean.Application.UseCases.Orders.Handlers
 {
-    public class GetAllOrdersCommandHandler : CommandHandlerBase, IRequestHandler<GetAllOrdersCommand, List<OrderDto>>
+    public class GetAllOrdersCommandHandler : CommandHandlerBase, IRequestHandler<GetAllOrdersQuery, ApiResponse<List<OrderDto>>>
     {
         public GetAllOrdersCommandHandler(
            IApplicationDbContext applicationDbContext,
            ICurrentUserService currentUserService,
            IMapper mapper) : base(applicationDbContext, currentUserService, mapper) { }
-        public async Task<List<OrderDto>> Handle(GetAllOrdersCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<List<OrderDto>>> Handle(GetAllOrdersQuery request, CancellationToken cancellationToken)
         {
-            try
+            var orders = await _applicationDbContext.Orders.ToListAsync();
+
+            var list_of_orderDtos = new List<OrderDto>();
+            foreach (var invoice in orders)
             {
-                var orders = await _applicationDbContext.Orders
-                    .Include(o => o.Customer)
-                    .Include(o => o.Invoice)
-                    .Include(o => o.Items)
-                    .ToListAsync();
-
-                var list_of_orderDtos = new List<OrderDto>();
-                foreach (var invoice in orders)
-                {
-                    list_of_orderDtos.Add(_mapper.Map<OrderDto>(invoice));
-                }
-
-                return list_of_orderDtos;
-
+                list_of_orderDtos.Add(_mapper.Map<OrderDto>(invoice));
             }
-            catch (Exception ex)
-            {
-                throw new InternalServerExeption(ex.Message);
-            }
+
+            return ApiResponseFactory.Ok(list_of_orderDtos);
         }
     }
 }

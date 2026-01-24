@@ -14,6 +14,7 @@ namespace QDryClean.Application.UseCases.Customers.Commands.Delete
 
             RuleFor(x => x.Id)
                 .NotEmpty().WithMessage("Customer ID is required.")
+                .NotNull().WithMessage("Customer ID cannot be null.")
                 .GreaterThan(0).WithMessage("Customer ID must be greater than 0.")
                 .MustAsync(async (command, id, cancellationToken) =>
                 {

@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using QDryClean.Application.UseCases.Customers.Commands.Create;
 using QDryClean.Application.UseCases.Customers.Commands.Delete;
 using QDryClean.Application.UseCases.Customers.Commands.Update;
-using QDryClean.Application.UseCases.Customers.Querries.GetAll;
-using QDryClean.Application.UseCases.Customers.Querries.GetById;
+using QDryClean.Application.UseCases.Customers.Queries.GetAll;
+using QDryClean.Application.UseCases.Customers.Queries.GetById;
 using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers

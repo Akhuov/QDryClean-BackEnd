@@ -9,6 +9,6 @@ namespace QDryClean.Application.Dtos
         public string LastName { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
-        public UserRole UserRole { get; set; } = UserRole.Receptionist;// Default role is Receptionist
+        public UserRole UserRole { get; set; } = UserRole.Receptionist; // Default role is Receptionist
     }
 }

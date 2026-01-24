@@ -1,12 +1,14 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using QDryClean.Api.Middlewares;
 using QDryClean.Application;
 using QDryClean.Application.Common.Behaviors;
+using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.Common.Interfaces.Auth;
 using QDryClean.Application.UseCases.Customers.Commands.Create;
 using QDryClean.Infrastructure;
@@ -32,6 +34,14 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
 
+// Custom Model State Invalid Response
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+    options.InvalidModelStateResponseFactory = context =>
+    {
+        throw new InvalidModelStateException(context.ModelState);
+    };
+});
 
 builder.Services.AddEndpointsApiExplorer();
 

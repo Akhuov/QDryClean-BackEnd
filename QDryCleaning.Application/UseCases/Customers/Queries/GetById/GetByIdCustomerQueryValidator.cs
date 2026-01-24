@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 
-namespace QDryClean.Application.UseCases.Customers.Querries.GetById
+namespace QDryClean.Application.UseCases.Customers.Queries.GetById
 {
     public class GetCustomerQueryValidator : AbstractValidator<GetByIdCustomerQuery>
     {

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using QDryClean.Application.Common.Errors;
 using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.Common.Responses;
 
@@ -31,6 +32,7 @@ public class ErrorHandlingMiddleware
 
             if (ex is BaseException appEx)
                 code = appEx.Code;
+            else code = ErrorCodes.InternalServerError;
 
             var response = new ApiResponse<Unit>() { Message = ex.Message, Code = code, Response = default };
 

@@ -2,8 +2,11 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using QDryClean.Application.UseCases.Orders.Commands;
-using QDryClean.Application.UseCases.Orders.Quarries;
+using QDryClean.Application.UseCases.Orders.Commands.Create;
+using QDryClean.Application.UseCases.Orders.Commands.Delete;
+using QDryClean.Application.UseCases.Orders.Commands.Update;
+using QDryClean.Application.UseCases.Orders.Queries.GetById;
+using QDryClean.Application.UseCases.Orders.Queries.GetAll;
 using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
@@ -51,7 +54,7 @@ namespace QDryClean.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllOrdersAsync()
         {
-            var command = new GetAllOrdersCommand();
+            var command = new GetAllOrdersQuery();
             var result = await _mediator.Send(command);
             return Ok(result);
         }
@@ -60,7 +63,7 @@ namespace QDryClean.Api.Controllers
         [HttpGet("{orderId:int}")]
         public async Task<IActionResult> GetByIdOrderAsync(int orderId)
         {
-            var command = new GetByIdOrderCommand() { Id = orderId };
+            var command = new GetByIdOrderQuery() { Id = orderId };
             var result = await _mediator.Send(command);
             return Ok(result);
         }
