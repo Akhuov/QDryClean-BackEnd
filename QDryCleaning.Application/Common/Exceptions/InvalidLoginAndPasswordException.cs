@@ -1,7 +1,9 @@
-﻿namespace QDryClean.Application.Common.Exceptions
+﻿using QDryClean.Application.Common.Errors;
+
+namespace QDryClean.Application.Common.Exceptions
 {
-    public class InvalidLoginAndPasswordException : Exception
+    public class InvalidLoginOrPasswordException : BaseException
     {
-        public InvalidLoginAndPasswordException(string message) : base(message) { }
+        public InvalidLoginOrPasswordException(string message) : base(message, ErrorCodes.InvalidLoginOrPassword) { }
     }
 }

@@ -23,7 +23,7 @@ namespace QDryClean.Api.Controllers
 
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpPost]
-        public async Task<IActionResult> CreateCustomerAsync(CreateCustomerCommand command)
+        public async Task<IActionResult> CreateCustomerAsync([FromBody] CreateCustomerCommand command)
         {
             var result = await _mediator.Send(command); 
             return Created("User created successfully.", result);
@@ -39,7 +39,7 @@ namespace QDryClean.Api.Controllers
 
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpPut]
-        public async Task<IActionResult> UpdateCustomerAsync(UpdateCustomerCommand command)
+        public async Task<IActionResult> UpdateCustomerAsync([FromBody] UpdateCustomerCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);

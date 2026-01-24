@@ -1,6 +1,8 @@
-﻿namespace QDryClean.Application.Common.Exceptions;
+﻿using QDryClean.Application.Common.Errors;
 
-public class NotFoundException : Exception
+namespace QDryClean.Application.Common.Exceptions;
+
+public class NotFoundException : BaseException
 {
-    public NotFoundException(string message) : base(message) { }
+    public NotFoundException(string message) : base(message, ErrorCodes.NotFound) { }
 }

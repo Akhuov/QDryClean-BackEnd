@@ -2,45 +2,36 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
+using QDryClean.Application.Common.Helpers;
 using QDryClean.Application.Common.Interfaces.Services;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
-using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.UseCases.Customers.Commands.Update;
 
 namespace QDryClean.Application.UseCases.Customers.Handlers
 {
-    public class UpdateCustomerCommandHandler: CommandHandlerBase, IRequestHandler<UpdateCustomerCommand, CustomerDto>
+    public class UpdateCustomerCommandHandler : CommandHandlerBase, IRequestHandler<UpdateCustomerCommand, ApiResponse<CustomerDto>>
     {
         public UpdateCustomerCommandHandler(
             IApplicationDbContext applicationDbContext,
             ICurrentUserService currentUserService,
             IMapper mapper) : base(applicationDbContext, currentUserService, mapper) { }
 
-        public async Task<CustomerDto> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<CustomerDto>> Handle(UpdateCustomerCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var customer = await _applicationDbContext.Customers.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
-                if (customer is not null)
-                {
-                    customer.FirstName = request.FirstName;
-                    customer.LastName = request.LastName;
-                    customer.PhoneNumber = request.PhoneNumber;
-                    customer.AdditionalPhoneNumber = request.AdditionalPhoneNumber;
-                    customer.Points = request.Points;
-                    customer.UpdatedAt = DateTime.Now;
-                    customer.UpdatedBy = _currentUserService.UserId;
+            var customer = await _applicationDbContext.Customers.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
 
-                    _applicationDbContext.Customers.Update(customer);
-                    await _applicationDbContext.SaveChangesAsync(cancellationToken);
-                    return _mapper.Map<CustomerDto>(customer);
-                }
-                throw new BadRequestExeption($"Customer with ID {request.Id} not found.");
-            }
-            catch (Exception ex)
-            {
-                throw new InternalServerExeption(ex.Message);
-            }
+            customer.FirstName = request.FirstName;
+            customer.LastName = request.LastName;
+            customer.PhoneNumber = PhoneNumberHelper.NormalizePhoneNumber(request.PhoneNumber);
+            customer.AdditionalPhoneNumber = PhoneNumberHelper.NormalizePhoneNumber(request.AdditionalPhoneNumber);
+            customer.Points = request.Points;
+            customer.UpdatedAt = DateTime.Now;
+            customer.UpdatedBy = _currentUserService.UserId;
+
+            _applicationDbContext.Customers.Update(customer);
+            await _applicationDbContext.SaveChangesAsync(cancellationToken);
+            return ApiResponseFactory.Ok(_mapper.Map<CustomerDto>(customer));
         }
     }
 }

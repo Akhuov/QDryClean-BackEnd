@@ -1,7 +1,9 @@
-﻿namespace QDryClean.Application.Common.Exceptions
+﻿using QDryClean.Application.Common.Errors;
+
+namespace QDryClean.Application.Common.Exceptions
 {
-    public class InternalServerExeption : Exception
+    public class InternalServerExeption : BaseException
     {
-        public InternalServerExeption(string message) : base(message) { }
+        public InternalServerExeption(string message) : base(message, ErrorCodes.InternalServerError) { }
     }
 }

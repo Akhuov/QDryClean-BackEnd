@@ -19,7 +19,7 @@ namespace QDryClean.Application.UseCases.Customers.Commands.Delete
                 {
                     return await _dbContext.Customers.AnyAsync(c => c.Id == id && c.DeletedAt == null && c.DeletedBy == null, cancellationToken);
                 })
-                .WithMessage("Customer with this Id does not exist");
+                .WithMessage("Customer with this ID does not exist");
         }
     }
 }

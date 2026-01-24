@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
 
 namespace QDryClean.Application.UseCases.Customers.Commands.Create
 {
-    public class CreateCustomerCommand : IRequest<CustomerDto> 
+    public class CreateCustomerCommand : IRequest<ApiResponse<CustomerDto>> 
     {
         public required string FirstName { get; set; }
         public string? LastName { get; set; }

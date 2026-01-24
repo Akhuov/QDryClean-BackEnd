@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
+using QDryClean.Application.Common.Helpers;
 
 namespace QDryClean.Application.UseCases.Customers.Commands.Create;
 
@@ -23,6 +24,7 @@ public class CreateCustomerCommandValidator
             .WithMessage("Invalid phone number format")
             .MustAsync(async (command, phone, cancellationToken) =>
             {
+                phone = PhoneNumberHelper.NormalizePhoneNumber(phone);
                 return !await _dbContext.Customers
                     .AnyAsync(c => c.PhoneNumber == phone, cancellationToken);
             })
