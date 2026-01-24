@@ -21,11 +21,11 @@ public class AuthService : IAuthService
         var user = await _context.Users.FirstOrDefaultAsync(u => u.LogIn == login);
         if (user is null)
         {
-            throw new InvalidLoginAndPasswordException("Invalid login.");
+            throw new InvalidLoginOrPasswordException("Invalid login.");
         }
         if (user.Password != password)
         {
-            throw new InvalidLoginAndPasswordException("Invalid password.");
+            throw new InvalidLoginOrPasswordException("Invalid password.");
         }
 
         return _tokenService.GenerateToken(user.Id, user.UserRole);

@@ -1,4 +1,6 @@
-﻿using QDryClean.Application.Common.Exceptions;
+﻿using MediatR;
+using QDryClean.Application.Common.Exceptions;
+using QDryClean.Application.Common.Responses;
 
 namespace QDryClean.Api.Middlewares;
 
@@ -25,14 +27,19 @@ public class ErrorHandlingMiddleware
 
             context.Response.ContentType = "application/json";
 
-            var response = new { errorMessage = ex.Message };
+            var code = 0;
+
+            if (ex is BaseException appEx)
+                code = appEx.Code;
+
+            var response = new ApiResponse<Unit>() { Message = ex.Message, Code = code, Response = default };
 
             context.Response.StatusCode = ex switch
             {
                 NotFoundException => StatusCodes.Status404NotFound,
                 BadRequestExeption => StatusCodes.Status400BadRequest,
                 UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
-                InvalidLoginAndPasswordException => StatusCodes.Status400BadRequest,
+                InvalidLoginOrPasswordException => StatusCodes.Status401Unauthorized,
                 _ => StatusCodes.Status500InternalServerError
             };
 

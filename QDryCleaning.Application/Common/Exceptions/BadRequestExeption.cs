@@ -1,7 +1,9 @@
-﻿namespace QDryClean.Application.Common.Exceptions
+﻿using QDryClean.Application.Common.Errors;
+
+namespace QDryClean.Application.Common.Exceptions
 {
-    public class BadRequestExeption : Exception
+    public class BadRequestExeption : BaseException
     {
-        public BadRequestExeption(string message) : base(message) { }
+        public BadRequestExeption(string message) : base(message, ErrorCodes.BadRequest) { }
     }
 }

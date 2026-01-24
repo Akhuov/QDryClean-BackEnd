@@ -3,25 +3,25 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Services;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.UseCases.Customers.Commands.Delete;
 
 namespace QDryClean.Application.UseCases.Customers.Handlers
 {
-    public class DeleteCustomerCommandHandler : CommandHandlerBase, IRequestHandler<DeleteCustomerCommand, string>
+    public class DeleteCustomerCommandHandler : CommandHandlerBase, IRequestHandler<DeleteCustomerCommand, ApiResponse<Unit>>
     {
         public DeleteCustomerCommandHandler(
             IApplicationDbContext applicationDbContext,
             ICurrentUserService currentUserService,
             IMapper mapper) : base(applicationDbContext, currentUserService, mapper) { }
 
-        public async Task<string> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<Unit>> Handle(DeleteCustomerCommand request, CancellationToken cancellationToken)
         {
             var customer = await _applicationDbContext.Customers.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
 
             _applicationDbContext.Customers.Remove(customer);
             await _applicationDbContext.SaveChangesAsync(cancellationToken);
-            return $"Customer {customer.FirstName} Deleted Succesfully!";
-
+            return ApiResponseFactory.Ok(Unit.Value);
         }
     }
 }

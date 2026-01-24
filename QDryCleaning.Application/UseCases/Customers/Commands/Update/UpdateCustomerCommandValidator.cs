@@ -16,7 +16,7 @@ namespace QDryClean.Application.UseCases.Customers.Commands.Update
                 .GreaterThan(0)
                 .MustAsync(async (command, id, cancellationToken) =>
                 {
-                    return await _dbContext.Customers.AnyAsync(c => c.Id == id, cancellationToken);
+                    return await _dbContext.Customers.AnyAsync(c => c.Id == id && c.DeletedAt == null && c.DeletedBy == null, cancellationToken);
                 })
                 .WithMessage("Customer with this Id does not exist");
 
