@@ -3,34 +3,22 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Services;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
-using QDryClean.Application.Common.Exceptions;
-using QDryClean.Application.UseCases.Orders.Quarries;
+using QDryClean.Application.UseCases.Orders.Queries.GetById;
 
 namespace QDryClean.Application.UseCases.Orders.Handlers
 {
-    public class GetByIdOrderCommandHandler : CommandHandlerBase, IRequestHandler<GetByIdOrderCommand, OrderDto>
+    public class GetByIdOrderCommandHandler : CommandHandlerBase, IRequestHandler<GetByIdOrderQuery, ApiResponse<OrderDto>>
     {
         public GetByIdOrderCommandHandler(
             IApplicationDbContext applicationDbContext,
             ICurrentUserService currentUserService,
             IMapper mapper) : base(applicationDbContext, currentUserService, mapper) { }
-        public async Task<OrderDto> Handle(GetByIdOrderCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<OrderDto>> Handle(GetByIdOrderQuery request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var order = await _applicationDbContext.Orders
-                    .Include(o => o.Customer)
-                    .Include(o => o.Invoice)
-                    .Include(o => o.Items)
-                    .FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
-                return _mapper.Map<OrderDto>(order);
-
-            }
-            catch (Exception ex)
-            {
-                throw new InternalServerExeption(ex.Message);
-            }
+            var order = await _applicationDbContext.Orders.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
+            return ApiResponseFactory.Ok(_mapper.Map<OrderDto>(order));
         }
     }
 }

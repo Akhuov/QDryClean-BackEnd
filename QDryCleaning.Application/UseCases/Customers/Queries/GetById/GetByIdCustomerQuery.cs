@@ -2,7 +2,7 @@
 using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
 
-namespace QDryClean.Application.UseCases.Customers.Querries.GetById
+namespace QDryClean.Application.UseCases.Customers.Queries.GetById
 {
     public class GetByIdCustomerQuery: IRequest<ApiResponse<CustomerDto>>
     {

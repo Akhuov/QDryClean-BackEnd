@@ -13,6 +13,7 @@ namespace QDryClean.Application.UseCases.Customers.Commands.Update
 
             RuleFor(x => x.Id)
                 .NotEmpty().WithMessage("Customer ID is required.")
+                .NotNull().WithMessage("Customer ID cannot be null.")
                 .GreaterThan(0)
                 .MustAsync(async (command, id, cancellationToken) =>
                 {
