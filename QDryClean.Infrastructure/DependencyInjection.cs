@@ -14,7 +14,7 @@ namespace QDryClean.Infrastructure
         {
             services.AddDbContext<IApplicationDbContext, ApplicationDbContext>(options =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DockerConnection"),
+                options.UseSqlServer(configuration.GetConnectionString("LocalConnection"),
                 sqlOptions => sqlOptions.EnableRetryOnFailure());
             });
 

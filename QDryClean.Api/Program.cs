@@ -116,11 +116,11 @@ builder.Services.AddTransient(
 var app = builder.Build();
 
 // ѕримен€ем миграции один раз при старте
-using (var scope = app.Services.CreateScope())
-{
-    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    context.Database.Migrate();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+//    context.Database.Migrate();
+//}
 
 // Configure Kestrel to listen on port 5000
 app.Urls.Add("http://+:5000");
@@ -137,6 +137,7 @@ if (app.Environment.IsDevelopment())
         c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
     });
 }
+
 //app.UseStaticFiles();
 
 //app.UseRouting();
