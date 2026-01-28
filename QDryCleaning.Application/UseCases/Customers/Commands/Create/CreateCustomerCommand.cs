@@ -6,9 +6,9 @@ namespace QDryClean.Application.UseCases.Customers.Commands.Create
 {
     public class CreateCustomerCommand : IRequest<ApiResponse<CustomerDto>> 
     {
-        public required string FirstName { get; set; }
+        public string FirstName { get; set; }
         public string? LastName { get; set; }
-        public required string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
         public string? AdditionalPhoneNumber { get; set; }
         public decimal Points { get; set; } = decimal.Zero;
     }

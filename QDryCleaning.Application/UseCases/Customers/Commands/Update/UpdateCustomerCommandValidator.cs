@@ -36,6 +36,10 @@ namespace QDryClean.Application.UseCases.Customers.Commands.Update
                         .AnyAsync(c => c.PhoneNumber == phone && c.Id != command.Id && c.DeletedAt == null && c.DeletedBy == null, cancellationToken);
                 })
                 .WithMessage("Customer with this phone number already exists");
+
+            RuleFor(x => x.AdditionalPhoneNumber)
+                .Matches(@"^(?:\+998|998)?\s?\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$")
+                .WithMessage("Invalid phone number format");
         }
     }
 }
