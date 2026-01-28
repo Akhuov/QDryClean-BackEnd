@@ -8,7 +8,7 @@ namespace QDryClean.Application.UseCases.Orders.Commands.Update
     public class UpdateOrderCommand : IRequest<ApiResponse<OrderDto>>
     {
         public int Id { get; set; } 
-        public required ProcessStatus ProcessStatus { get; set; }
+        public ProcessStatus ProcessStatus { get; set; }
         public string? Note { get; set; }
     }
 }

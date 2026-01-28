@@ -29,5 +29,9 @@ public class CreateCustomerCommandValidator
                     .AnyAsync(c => c.PhoneNumber == phone, cancellationToken);
             })
             .WithMessage("Customer with this phone number already exists");
-    }
+
+        RuleFor(x => x.AdditionalPhoneNumber)
+            .Matches(@"^(?:\+998|998)?\s?\d{2}\s?\d{3}\s?\d{2}\s?\d{2}$")
+            .WithMessage("Invalid phone number format");
+        }
 }

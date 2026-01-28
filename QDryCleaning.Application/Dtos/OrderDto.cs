@@ -8,8 +8,8 @@ namespace QDryClean.Application.Dtos
         public int Id { get; set; }
         public int customerId { get; set; }
         public int ReceiptNumber { get; set; }
-        public required ProcessStatus ProcessStatus { get; set; }
-        public required DateOnly ExpectedCompletionDate { get; set; }
+        public ProcessStatus ProcessStatus { get; set; }
+        public DateOnly ExpectedCompletionDate { get; set; }
         public IList<string> Notes { get; set; } = new List<string>();
 
         //public ICollection<Item> Items { get; set; } = new List<Item>();
