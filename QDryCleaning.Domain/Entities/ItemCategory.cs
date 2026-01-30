@@ -2,7 +2,8 @@
 {
     public class ItemCategory : Auditable
     {
-        public required string Name { get; set; }
+        public string Name { get; set; }
+        public string? Description { get; set; }
         public ICollection<ItemType> Invoices { get; set; } = new List<ItemType>();
     }
 }

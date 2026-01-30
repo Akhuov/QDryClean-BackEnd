@@ -3,41 +3,38 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Services;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
-using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.UseCases.Charges.Commands;
 
 namespace QDryClean.Application.UseCases.Charges.Handlers
 {
-    public class UpdateChargeCommandHandler : CommandHandlerBase, IRequestHandler<UpdateChargeCommand, ChargeDto>
+    public class UpdateChargeCommandHandler : CommandHandlerBase, IRequestHandler<UpdateChargeCommand, ApiResponse<ChargeDto>>
     {
         public UpdateChargeCommandHandler(
            IApplicationDbContext applicationDbContext,
            ICurrentUserService currentUserService,
            IMapper mapper) : base(applicationDbContext, currentUserService, mapper) { }
 
-        public async Task<ChargeDto> Handle(UpdateChargeCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<ChargeDto>> Handle(UpdateChargeCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var charge = await _applicationDbContext.Charges.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
-                if (charge is not null)
-                {
-                    charge.Cost = request.Cost;
-                    charge.Name = request.Name;
-                    charge.UpdatedAt = DateTime.UtcNow;
-                    charge.UpdatedBy = _currentUserService.UserId;
+            var charge = await _applicationDbContext.Charges.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
 
-                    _applicationDbContext.Charges.Update(charge);
-                    await _applicationDbContext.SaveChangesAsync(cancellationToken);
-                    return _mapper.Map<ChargeDto>(charge);
-                }
-                throw new BadRequestExeption($"User with ID {request.Id} not found.");
-            }
-            catch (Exception ex)
+            if (request.Cost != null)
             {
-                throw new InternalServerExeption(ex.Message);
+                charge.Cost = request.Cost;
             }
+            if (request.Name != null)
+            {
+                charge.Name = request.Name;
+            }
+
+            charge.UpdatedAt = DateTime.UtcNow;
+            charge.UpdatedBy = _currentUserService.UserId;
+
+            _applicationDbContext.Charges.Update(charge);
+            await _applicationDbContext.SaveChangesAsync(cancellationToken);
+            return ApiResponseFactory.Ok(_mapper.Map<ChargeDto>(charge));
         }
     }
 }

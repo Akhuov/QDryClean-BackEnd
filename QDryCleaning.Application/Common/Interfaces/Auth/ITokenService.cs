@@ -1,5 +1,4 @@
-﻿using QDryClean.Domain.Entities;
-using QDryClean.Domain.Enums;
+﻿using QDryClean.Domain.Enums;
 
 namespace QDryClean.Application.Common.Interfaces.Auth
 {

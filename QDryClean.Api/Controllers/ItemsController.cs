@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QDryClean.Application.UseCases.Items.Commands;
@@ -13,12 +12,10 @@ namespace QDryClean.Api.Controllers
     public class ItemsController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
 
-        public ItemsController(IMediator mediator, IMapper mapper)
+        public ItemsController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
 
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
@@ -31,7 +28,7 @@ namespace QDryClean.Api.Controllers
 
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpDelete("{itemId:int}")]
-        public async Task<IActionResult> DeleteItemAsync(DeleteItemCommand command)
+        public async Task<IActionResult> DeleteItemAsync(SoftDeleteItemCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);

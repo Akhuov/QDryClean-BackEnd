@@ -3,40 +3,30 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Services;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
-using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.UseCases.ItemCategories.Commands;
 
 namespace QDryClean.Application.UseCases.ItemCategories.Handlers
 {
-    public class UpdateItemCategoryCommandHandler : CommandHandlerBase, IRequestHandler<UpdateItemCategoryCommand, ItemCategoryDto>
+    public class UpdateItemCategoryCommandHandler : CommandHandlerBase, IRequestHandler<UpdateItemCategoryCommand, ApiResponse<ItemCategoryDto>>
     {
         public UpdateItemCategoryCommandHandler(
-            IApplicationDbContext applicationDbContext, 
-            ICurrentUserService currentUserService, 
+            IApplicationDbContext applicationDbContext,
+            ICurrentUserService currentUserService,
             IMapper mapper) : base(applicationDbContext, currentUserService, mapper) { }
 
-        public async Task<ItemCategoryDto> Handle(UpdateItemCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<ItemCategoryDto>> Handle(UpdateItemCategoryCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var itemCategory = await _applicationDbContext.ItemCategories.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
-                if (itemCategory is not null)
-                {
-                    itemCategory.Name = request.Name;
-                    itemCategory.UpdatedBy = _currentUserService.UserId;
-                    itemCategory.UpdatedAt = DateTime.Now;
+            var itemCategory = await _applicationDbContext.ItemCategories.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
 
-                    _applicationDbContext.ItemCategories.Update(itemCategory);
-                    await _applicationDbContext.SaveChangesAsync(cancellationToken);
-                    return new ItemCategoryDto() { Id = itemCategory.Id, Name = itemCategory.Name };
-                }
-                throw new BadRequestExeption($"Item Category not found.");
-            }
-            catch (Exception ex)
-            {
-                throw new InternalServerExeption(ex.Message);
-            }
+            itemCategory.Name = request.Name;
+            itemCategory.UpdatedBy = _currentUserService.UserId;
+            itemCategory.UpdatedAt = DateTime.Now;
+
+            _applicationDbContext.ItemCategories.Update(itemCategory);
+            await _applicationDbContext.SaveChangesAsync(cancellationToken);
+            return ApiResponseFactory.Ok(new ItemCategoryDto() { Id = itemCategory.Id, Name = itemCategory.Name });
         }
     }
 }

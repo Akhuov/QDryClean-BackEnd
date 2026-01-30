@@ -1,11 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using QDryClean.Application.UseCases.Customers.Commands.Create;
-using QDryClean.Application.UseCases.Customers.Commands.Delete;
-using QDryClean.Application.UseCases.Customers.Commands.Update;
-using QDryClean.Application.UseCases.Customers.Queries.GetAll;
-using QDryClean.Application.UseCases.Customers.Queries.GetById;
+using QDryClean.Application.UseCases.Customers.Commands;
+using QDryClean.Application.UseCases.Customers.Queries;
 using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
@@ -25,7 +22,7 @@ namespace QDryClean.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCustomerAsync([FromBody] CreateCustomerCommand command)
         {
-            var result = await _mediator.Send(command); 
+            var result = await _mediator.Send(command);
             return Created("User created successfully.", result);
         }
 

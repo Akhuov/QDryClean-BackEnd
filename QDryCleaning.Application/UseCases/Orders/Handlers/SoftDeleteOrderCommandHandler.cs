@@ -4,8 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Services;
 using QDryClean.Application.Common.Responses;
-using QDryClean.Application.UseCases.Orders.Commands.Delete;
-
+using QDryClean.Application.UseCases.Orders.Commands;
 
 namespace QDryClean.Application.UseCases.Orders.Handlers
 {
@@ -20,7 +19,7 @@ namespace QDryClean.Application.UseCases.Orders.Handlers
 
             var order = await _applicationDbContext.Orders.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
 
-            order.DeletedAt = DateTime.Now;
+            order.DeletedAt = DateTime.UtcNow;
             order.DeletedBy = _currentUserService.UserId;
 
             _applicationDbContext.Orders.Update(order);

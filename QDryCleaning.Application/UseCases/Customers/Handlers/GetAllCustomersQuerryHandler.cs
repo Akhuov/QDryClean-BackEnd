@@ -5,7 +5,7 @@ using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Services;
 using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
-using QDryClean.Application.UseCases.Customers.Queries.GetAll;
+using QDryClean.Application.UseCases.Customers.Queries;
 
 namespace QDryClean.Application.UseCases.Customers.Handlers
 {
@@ -21,13 +21,13 @@ namespace QDryClean.Application.UseCases.Customers.Handlers
 
             var customers = await _applicationDbContext.Customers.Where(x => x.DeletedAt == null && x.DeletedBy == null).ToListAsync();
 
-            var list_of_customerDtos = new List<CustomerDto>();
+            var listOfCustomerDtos = new List<CustomerDto>();
             foreach (var customer in customers)
             {
-                list_of_customerDtos.Add(_mapper.Map<CustomerDto>(customer));
+                listOfCustomerDtos.Add(_mapper.Map<CustomerDto>(customer));
             }
 
-            return ApiResponseFactory.Ok(list_of_customerDtos);
+            return ApiResponseFactory.Ok(listOfCustomerDtos);
         }
     }
 }

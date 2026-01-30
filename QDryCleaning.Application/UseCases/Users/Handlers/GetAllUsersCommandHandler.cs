@@ -12,15 +12,15 @@ namespace QDryClean.Application.UseCases.Users.Handlers
     {
 
         public GetAllUsersCommandHandler(
-            IApplicationDbContext applicationDbContext, 
-            ICurrentUserService currentUserService, 
+            IApplicationDbContext applicationDbContext,
+            ICurrentUserService currentUserService,
             IMapper mapper) : base(applicationDbContext, currentUserService, mapper) { }
 
         public async Task<List<UserDto>> Handle(GetAllUsersCommand request, CancellationToken cancellationToken)
         {
             var users = await _applicationDbContext.Users.ToListAsync(cancellationToken);
             var listOfUserDtos = new List<UserDto>();
-            foreach(var user in users)
+            foreach (var user in users)
             {
                 listOfUserDtos.Add(_mapper.Map<UserDto>(user));
             }

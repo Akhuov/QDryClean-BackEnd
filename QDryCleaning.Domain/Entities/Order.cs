@@ -7,8 +7,8 @@ namespace QDryClean.Domain.Entities
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ReceiptNumber { get; set; }
-        public required ProcessStatus ProcessStatus { get; set; }
-        public required DateOnly ExpectedCompletionDate { get; set; }
+        public ProcessStatus ProcessStatus { get; set; }
+        public DateOnly ExpectedCompletionDate { get; set; }
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
         public Invoice Invoice { get; set; }

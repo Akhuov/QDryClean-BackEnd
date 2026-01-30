@@ -1,10 +1,11 @@
 ﻿using MediatR;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
 
 namespace QDryClean.Application.UseCases.ItemCategories.Commands
 {
-    public class CreateItemCategoryCommand : IRequest<ItemCategoryDto>
+    public class CreateItemCategoryCommand : IRequest<ApiResponse<ItemCategoryDto>>
     {
-        public required string Name { get; set; }
+        public string Name { get; set; }
     }
 }

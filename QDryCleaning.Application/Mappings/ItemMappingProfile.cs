@@ -7,7 +7,7 @@ namespace QDryClean.Application.Mappings
 {
     public class ItemMappingProfile : Profile
     {
-        public ItemMappingProfile() 
+        public ItemMappingProfile()
         {
             CreateMap<Item, ItemDto>();
             CreateMap<CreateItemCommand, Item>()

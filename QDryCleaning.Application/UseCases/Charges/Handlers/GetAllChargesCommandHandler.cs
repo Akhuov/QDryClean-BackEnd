@@ -2,39 +2,32 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
-using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.Common.Interfaces.Services;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
 using QDryClean.Application.UseCases.Charges.Quarries;
 
 namespace QDryClean.Application.UseCases.Charges.Handlers
 {
-    public class GetAllChargesCommandHandler : CommandHandlerBase, IRequestHandler<GetAllChargesCommand, List<ChargeDto>>
+    public class GetAllChargesCommandHandler : CommandHandlerBase, IRequestHandler<GetAllChargesCommand, ApiResponse<List<ChargeDto>>>
     {
         public GetAllChargesCommandHandler(
             IApplicationDbContext applicationDbContext,
             ICurrentUserService currentUserService,
             IMapper mapper) : base(applicationDbContext, currentUserService, mapper) { }
 
-        public async Task<List<ChargeDto>> Handle(GetAllChargesCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<List<ChargeDto>>> Handle(GetAllChargesCommand request, CancellationToken cancellationToken)
         {
-            try
+
+            var charges = await _applicationDbContext.Charges.ToListAsync();
+
+            var listOfChargesDtos = new List<ChargeDto>();
+            foreach (var charge in charges)
             {
-                var charges = await _applicationDbContext.Charges.ToListAsync();
-
-                var list_of_chargesDtos = new List<ChargeDto>();
-                foreach (var charge in charges)
-                {
-                    list_of_chargesDtos.Add(_mapper.Map<ChargeDto>(charge));
-                }
-
-                return list_of_chargesDtos;
-
+                listOfChargesDtos.Add(_mapper.Map<ChargeDto>(charge));
             }
-            catch (Exception ex)
-            {
-                throw new InternalServerExeption(ex.Message);
-            }
+
+            return ApiResponseFactory.Ok(listOfChargesDtos);
         }
     }
 }

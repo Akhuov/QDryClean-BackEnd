@@ -6,7 +6,7 @@ using QDryClean.Application.Common.Helpers;
 using QDryClean.Application.Common.Interfaces.Services;
 using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
-using QDryClean.Application.UseCases.Customers.Commands.Update;
+using QDryClean.Application.UseCases.Customers.Commands;
 
 namespace QDryClean.Application.UseCases.Customers.Handlers
 {

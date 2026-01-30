@@ -3,40 +3,35 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Services;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
-using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.UseCases.ItemCategories.Querries;
 
 namespace QDryClean.Application.UseCases.ItemCategories.Handlers
 {
-    public class GetAllItemCategoriesQuerryHandler : CommandHandlerBase, IRequestHandler<GetAllItemCategoriesQuerry, List<ItemCategoryDto>>
+    public class GetAllItemCategoriesQuerryHandler : CommandHandlerBase, IRequestHandler<GetAllItemCategoriesQuerry, ApiResponse<List<ItemCategoryDto>>>
     {
         public GetAllItemCategoriesQuerryHandler(
-            IApplicationDbContext applicationDbContext, 
-            ICurrentUserService currentUserService, 
+            IApplicationDbContext applicationDbContext,
+            ICurrentUserService currentUserService,
             IMapper mapper) : base(applicationDbContext, currentUserService, mapper) { }
 
-        public async Task<List<ItemCategoryDto>> Handle(GetAllItemCategoriesQuerry request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<List<ItemCategoryDto>>> Handle(GetAllItemCategoriesQuerry request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var itemCategories = await _applicationDbContext.ItemCategories.ToListAsync();
 
-                var list_of_itemCategoryDtos = new List<ItemCategoryDto>();
-                foreach (var itemCategory in itemCategories)
+            var itemCategories = await _applicationDbContext.ItemCategories.ToListAsync();
+
+            var listOfItemCategoryDtos = new List<ItemCategoryDto>();
+            foreach (var itemCategory in itemCategories)
+            {
+                listOfItemCategoryDtos.Add(new ItemCategoryDto()
                 {
-                    list_of_itemCategoryDtos.Add(new ItemCategoryDto() { 
-                        Id = itemCategory.Id, 
-                        Name = itemCategory.Name});
-                }
-
-                return list_of_itemCategoryDtos;
-
+                    Id = itemCategory.Id,
+                    Name = itemCategory.Name
+                });
             }
-            catch (Exception ex)
-            {
-                throw new InternalServerExeption(ex.Message);
-            }
+
+            return ApiResponseFactory.Ok(listOfItemCategoryDtos);
         }
     }
 }

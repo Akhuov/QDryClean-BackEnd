@@ -1,0 +1,13 @@
+﻿using MediatR;
+using QDryClean.Application.Common.Responses;
+using QDryClean.Application.Dtos;
+
+namespace QDryClean.Application.UseCases.Orders.Commands
+{
+    public class CreateOrderCommand : IRequest<ApiResponse<OrderDto>>
+    {
+        public int? DaysToCompletion { get; set; } = null;
+        public int CustomerId { get; set; }
+        public string? Note { get; set; }
+    }
+}

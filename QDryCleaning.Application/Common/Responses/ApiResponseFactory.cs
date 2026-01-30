@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace QDryClean.Application.Common.Responses
+﻿namespace QDryClean.Application.Common.Responses
 {
     public static class ApiResponseFactory
     {

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Services;
 using QDryClean.Application.Common.Responses;
-using QDryClean.Application.UseCases.Customers.Commands.Delete;
+using QDryClean.Application.UseCases.Customers.Commands;
 
 namespace QDryClean.Application.UseCases.Customers.Handlers
 {
@@ -20,7 +20,7 @@ namespace QDryClean.Application.UseCases.Customers.Handlers
         {
             var customer = await _applicationDbContext.Customers.FirstOrDefaultAsync(u => u.Id == request.Id, cancellationToken);
 
-            customer.DeletedAt = DateTime.Now;
+            customer.DeletedAt = DateTime.UtcNow;
             customer.DeletedBy = _currentUserService.UserId;
 
             _applicationDbContext.Customers.Update(customer);
