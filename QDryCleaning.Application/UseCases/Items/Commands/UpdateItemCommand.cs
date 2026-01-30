@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
 
 namespace QDryClean.Application.UseCases.Items.Commands
 {
-    public class UpdateItemCommand : IRequest<ItemDto>
+    public class UpdateItemCommand : IRequest<ApiResponse<ItemDto>>
     {
         public int Id { get; set; }
         public string? Colour { get; set; }

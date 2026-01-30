@@ -1,10 +1,8 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QDryClean.Application.UseCases.Charges.Commands;
 using QDryClean.Application.UseCases.Charges.Quarries;
-using QDryClean.Domain.Entities;
 using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
@@ -14,12 +12,10 @@ namespace QDryClean.Api.Controllers
     public class ChargesController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
 
-        public ChargesController(IMediator mediator, IMapper mapper)
+        public ChargesController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpPost]
@@ -30,7 +26,7 @@ namespace QDryClean.Api.Controllers
         }
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpDelete]
-        public async Task<IActionResult> DeleteChargeAsync(DeleteChargeCommand command)
+        public async Task<IActionResult> DeleteChargeAsync(SoftDeleteChargeCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
@@ -50,7 +46,7 @@ namespace QDryClean.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("{chargeId:int}")] 
+        [HttpGet("{chargeId:int}")]
         public async Task<IActionResult> GetByIdChargeAsync(int chargeId)
         {
             var command = new GetByIdChargeCommand() { Id = chargeId };

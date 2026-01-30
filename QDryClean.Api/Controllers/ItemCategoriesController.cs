@@ -28,7 +28,7 @@ namespace QDryClean.Api.Controllers
 
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpDelete("{itemCategoryId:int}")]
-        public async Task<IActionResult> DeleteItemCategoryAsync(DeleteItemCategoryCommand command)
+        public async Task<IActionResult> DeleteItemCategoryAsync(SoftDeleteItemCategoryCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);

@@ -2,9 +2,9 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
+using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.Common.Interfaces.Services;
 using QDryClean.Application.Dtos;
-using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.UseCases.Items.Querries;
 
 namespace QDryClean.Application.UseCases.Items.Handlers
@@ -12,8 +12,8 @@ namespace QDryClean.Application.UseCases.Items.Handlers
     public class GetAllItemsQuerryHandler : CommandHandlerBase, IRequestHandler<GetAllItemsQuerry, List<ItemDto>>
     {
         public GetAllItemsQuerryHandler(
-            IApplicationDbContext applicationDbContext, 
-            ICurrentUserService currentUserService, 
+            IApplicationDbContext applicationDbContext,
+            ICurrentUserService currentUserService,
             IMapper mapper) : base(applicationDbContext, currentUserService, mapper) { }
 
         public async Task<List<ItemDto>> Handle(GetAllItemsQuerry request, CancellationToken cancellationToken)

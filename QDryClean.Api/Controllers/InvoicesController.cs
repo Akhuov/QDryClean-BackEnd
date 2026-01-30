@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QDryClean.Application.UseCases.Invoices.Commands;
@@ -13,12 +12,11 @@ namespace QDryClean.Api.Controllers
     public class InvoicesController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
 
-        public InvoicesController(IMediator mediator, IMapper mapper)
+        public InvoicesController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
+
         }
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpPost]

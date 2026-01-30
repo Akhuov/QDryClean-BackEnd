@@ -8,9 +8,8 @@ using Microsoft.OpenApi.Models;
 using QDryClean.Api.Middlewares;
 using QDryClean.Application;
 using QDryClean.Application.Common.Behaviors;
-using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.Common.Interfaces.Auth;
-using QDryClean.Application.UseCases.Customers.Commands.Create;
+using QDryClean.Application.UseCases.Customers.Validators;
 using QDryClean.Infrastructure;
 using QDryClean.Infrastructure.Persistance;
 using QDryClean.Infrastructure.Services.JWT;
@@ -98,7 +97,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173") // порт твоего фронта
+            policy.WithOrigins("http://localhost:5173") // порт фронта
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -112,7 +111,7 @@ builder.Services.AddTransient(
     typeof(ValidationBehavior<,>)
 );
 
-
+// Build the app
 var app = builder.Build();
 
 // Применяем миграции один раз при старте

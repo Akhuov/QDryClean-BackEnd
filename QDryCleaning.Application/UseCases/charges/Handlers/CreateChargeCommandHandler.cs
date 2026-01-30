@@ -2,53 +2,30 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
-using QDryClean.Application.Common.Exceptions;
 using QDryClean.Application.Common.Interfaces.Services;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
 using QDryClean.Application.UseCases.Charges.Commands;
 using QDryClean.Domain.Entities;
 
 namespace QDryClean.Application.UseCases.Charges.Handlers
 {
-    public class CreateChargeCommandHandler : CommandHandlerBase, IRequestHandler<CreateChargeCommand, ChargeDto>
+    public class CreateChargeCommandHandler : CommandHandlerBase, IRequestHandler<CreateChargeCommand, ApiResponse<ChargeDto>>
     {
         public CreateChargeCommandHandler(
             IApplicationDbContext applicationDbContext,
             ICurrentUserService currentUserService,
             IMapper mapper) : base(applicationDbContext, currentUserService, mapper) { }
-        public async Task<ChargeDto> Handle(CreateChargeCommand request, CancellationToken cancellationToken)
+        public async Task<ApiResponse<ChargeDto>> Handle(CreateChargeCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
+            var charge = await _applicationDbContext.Charges.FirstOrDefaultAsync(u => u.Name == request.Name, cancellationToken);
 
-                if (request.Name is null)
-                {
-                    throw new BadRequestExeption("Name field is required!");
-                }
-
-                var charge = await _applicationDbContext.Charges.FirstOrDefaultAsync(u => u.Name == request.Name, cancellationToken);
-                if (charge is null)
-                {
-                    charge = _mapper.Map<Charge>(request);
-                    charge.CreatedBy = _currentUserService.UserId;
-                    charge.CreatedAt = DateTime.Now;
-                    await _applicationDbContext.Charges.AddAsync(charge, cancellationToken);
-                    await _applicationDbContext.SaveChangesAsync(cancellationToken);
-                    return _mapper.Map<ChargeDto>(charge);
-                }
-                else
-                {
-                    throw new BadRequestExeption("Charge with this name already exists");
-                }
-            }
-            catch (BadRequestExeption)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new InternalServerExeption(ex.Message);
-            }
+            charge = _mapper.Map<Charge>(request);
+            charge.CreatedBy = _currentUserService.UserId;
+            charge.CreatedAt = DateTime.Now;
+            await _applicationDbContext.Charges.AddAsync(charge, cancellationToken);
+            await _applicationDbContext.SaveChangesAsync(cancellationToken);
+            return ApiResponseFactory.Ok(_mapper.Map<ChargeDto>(charge));
         }
     }
 }

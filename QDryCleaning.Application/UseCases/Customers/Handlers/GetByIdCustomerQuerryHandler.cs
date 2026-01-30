@@ -5,7 +5,7 @@ using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Services;
 using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
-using QDryClean.Application.UseCases.Customers.Queries.GetById;
+using QDryClean.Application.UseCases.Customers.Queries;
 
 namespace QDryClean.Application.UseCases.Customers.Handlers
 {

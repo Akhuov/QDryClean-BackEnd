@@ -2,11 +2,8 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using QDryClean.Application.UseCases.Orders.Commands.Create;
-using QDryClean.Application.UseCases.Orders.Commands.Delete;
-using QDryClean.Application.UseCases.Orders.Commands.Update;
-using QDryClean.Application.UseCases.Orders.Queries.GetById;
-using QDryClean.Application.UseCases.Orders.Queries.GetAll;
+using QDryClean.Application.UseCases.Orders.Commands;
+using QDryClean.Application.UseCases.Orders.Queries;
 using QDryClean.Domain.Enums;
 
 namespace QDryClean.Api.Controllers
@@ -22,8 +19,8 @@ namespace QDryClean.Api.Controllers
         {
             _mediator = mediator;
         }
-        
-        
+
+
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpPost]
         public async Task<IActionResult> CreateOrderAsync(CreateOrderCommand command)
@@ -31,8 +28,8 @@ namespace QDryClean.Api.Controllers
             var result = await _mediator.Send(command);
             return Created("Order created successfully.", result);
         }
-        
-        
+
+
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpDelete("{orderId:int}")]
         public async Task<IActionResult> DeleteOrderAsync(DeleteOrderCommand command)
@@ -40,8 +37,8 @@ namespace QDryClean.Api.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-        
-        
+
+
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpPut]
         public async Task<IActionResult> UpdateOrderAsync(UpdateOrderCommand command)
@@ -49,8 +46,8 @@ namespace QDryClean.Api.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-        
-        
+
+
         [HttpGet]
         public async Task<IActionResult> GetAllOrdersAsync()
         {

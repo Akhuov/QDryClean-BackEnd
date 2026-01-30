@@ -215,6 +215,9 @@ namespace QDryClean.Infrastructure.Migrations
                     b.Property<int?>("DeletedBy")
                         .HasColumnType("int");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -238,7 +241,7 @@ namespace QDryClean.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("ChargeId")
+                    b.Property<int?>("ChargeId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -269,7 +272,8 @@ namespace QDryClean.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ChargeId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[ChargeId] IS NOT NULL");
 
                     b.HasIndex("ItemCategoryId");
 
@@ -413,9 +417,7 @@ namespace QDryClean.Infrastructure.Migrations
                 {
                     b.HasOne("QDryClean.Domain.Entities.Charge", "Charge")
                         .WithOne("ItemType")
-                        .HasForeignKey("QDryClean.Domain.Entities.ItemType", "ChargeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("QDryClean.Domain.Entities.ItemType", "ChargeId");
 
                     b.HasOne("QDryClean.Domain.Entities.ItemCategory", "ItemCategory")
                         .WithMany("Invoices")

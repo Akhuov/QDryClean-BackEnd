@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QDryClean.Application.UseCases.ItemTypes.Commands;
@@ -13,13 +12,13 @@ namespace QDryClean.Api.Controllers
     public class ItemTypesController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
 
-        public ItemTypesController(IMediator mediator, IMapper mapper)
+        public ItemTypesController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
+
+
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpPost]
         public async Task<IActionResult> CreateItemTypeAsync(CreateItemTypeCommand command)
@@ -27,13 +26,17 @@ namespace QDryClean.Api.Controllers
             var result = await _mediator.Send(command);
             return Created("ItemType created successfully.", result);
         }
+
+
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpDelete("{itemTypeId:int}")]
-        public async Task<IActionResult> DeleteItemTypeAsync(DeleteItemTypeCommand command)
+        public async Task<IActionResult> DeleteItemTypeAsync(SoftDeleteItemTypeCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
+
+
         [Authorize(Roles = $"{nameof(UserRole.Receptionist)},{nameof(UserRole.Admin)}")]
         [HttpPut]
         public async Task<IActionResult> UpdateItemTypeAsync(UpdateItemTypeCommand command)
@@ -41,19 +44,20 @@ namespace QDryClean.Api.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
+
+
         [HttpGet]
         public async Task<IActionResult> GetAllItemTypesAsync()
         {
-            var command = new GetAllItemTypesCommand();
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(new GetAllItemTypesCommand());
             return Ok(result);
         }
+
 
         [HttpGet("{itemTypeId:int}")]
         public async Task<IActionResult> GetByIdItemTypeAsync(int itemTypeId)
         {
-            var command = new GetByIdItemTypeCommand() { Id = itemTypeId };
-            var result = await _mediator.Send(command);
+            var result = await _mediator.Send(new GetByIdItemTypeCommand() { Id = itemTypeId });
             return Ok(result);
         }
     }

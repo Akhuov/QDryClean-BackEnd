@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using QDryClean.Application.Absreactions;
 using QDryClean.Application.Common.Interfaces.Services;
 using QDryClean.Application.Common.Responses;
-using QDryClean.Application.UseCases.Customers.Commands.Delete;
+using QDryClean.Application.UseCases.Customers.Commands;
 
 namespace QDryClean.Application.UseCases.Customers.Handlers
 {

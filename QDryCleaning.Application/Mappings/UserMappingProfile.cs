@@ -11,7 +11,7 @@ namespace QDryClean.Application.Mappings
         {
             CreateMap<User, UserDto>();
 
-            CreateMap<CreateUserCommand,UserDto>().ReverseMap();
+            CreateMap<CreateUserCommand, UserDto>().ReverseMap();
 
             CreateMap<UserDto, User>()
                 .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())

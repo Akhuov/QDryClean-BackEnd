@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QDryClean.Application.UseCases.Users.Commands;
@@ -13,12 +12,10 @@ namespace QDryClean.Api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly IMapper _mapper;
 
-        public UsersController(IMediator mediator, IMapper mapper)
+        public UsersController(IMediator mediator)
         {
             _mediator = mediator;
-            _mapper = mapper;
         }
 
 
@@ -35,11 +32,8 @@ namespace QDryClean.Api.Controllers
         [Authorize(Roles = nameof(UserRole.Admin))]
         public async Task<IActionResult> DeleteUserAsync(int userId)
         {
-            var command = new DeleteUserCommand
-            {
-                Id = userId
-            };
-            var result = await _mediator.Send(command);
+
+            var result = await _mediator.Send(new DeleteUserCommand { Id = userId });
             return Ok("User deleted successfully.");
         }
 
@@ -56,17 +50,16 @@ namespace QDryClean.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllUsersAsync()
         {
-            var users = await _mediator.Send(new GetAllUsersCommand());
-            return Ok(users);
+            var result = await _mediator.Send(new GetAllUsersCommand());
+            return Ok(result);
         }
 
 
         [HttpGet("{userId:int}")]
         public async Task<IActionResult> GetUserByIdAsync(int userId)
         {
-            var query = new GetByIdUserCommand { Id = userId };
-            var user = await _mediator.Send(query);
-            return Ok(user);
+            var result = await _mediator.Send(new GetByIdUserCommand { Id = userId });
+            return Ok(result);
         }
     }
 }

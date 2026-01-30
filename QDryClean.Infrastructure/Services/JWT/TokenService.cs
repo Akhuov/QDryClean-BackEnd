@@ -13,7 +13,7 @@ public class TokenService : ITokenService
     {
         _config = config;
     }
-    public string GenerateToken(int id,UserRole role)
+    public string GenerateToken(int id, UserRole role)
     {
         var claims = new[]
         {

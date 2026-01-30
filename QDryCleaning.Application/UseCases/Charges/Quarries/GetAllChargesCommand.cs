@@ -1,10 +1,10 @@
 ﻿using MediatR;
+using QDryClean.Application.Common.Responses;
 using QDryClean.Application.Dtos;
-using QDryClean.Domain.Entities;
 
 namespace QDryClean.Application.UseCases.Charges.Quarries
 {
-    public class GetAllChargesCommand : IRequest<List<ChargeDto>>
+    public class GetAllChargesCommand : IRequest<ApiResponse<List<ChargeDto>>>
     {
     }
 }
